@@ -19,10 +19,6 @@ This script adds the abality to rob the Vangelico Jewelry  Store for a server.
 	
 	Sounds for breaking/failing glass case.  Breaking sound can not be turned off / fail sound can be turned off.
 	
-	
-	
-	
-	
 	Security feature to keep one box paying out multiple times.
 
 

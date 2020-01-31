@@ -35,6 +35,6 @@ This script adds the abality to rob the Vangelico Jewelry  Store for a server.
 	Config.AllowPoliceStoreClose:  Allows police to close the store after a robbery until next Store Reset.
 	
 
-
+Any comments or questions about the script can be asked in the release post on FiveM.net/forum  or stop by https://twitch.tv/spikeodets to see what I am working on next.
 
 SpikE

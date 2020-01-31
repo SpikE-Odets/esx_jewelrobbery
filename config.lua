@@ -6,7 +6,7 @@ Config.ResetTime                 = 60        -- Number of Minutes the store will
 Config.Closed                    =  true      -- Sets store to closed if the police online is less then MinPolice
 Config.AllowPoliceStoreClose     =  true     -- Allows any job set in Config.PoliceJobs to Close the store after a robbery until next store reset.
 
-Config.PoliceNotifyBroken        =  75       -- The chance breaking a case will notify the police.  Setting to 100 will notify every case.
+Config.PoliceNotifyBroken        =  75       -- The chance breaking a case will notify the police.  Setting to 100 will notify first broken case..
 Config.PoliceNotifyNonBroken     =  25       -- The chance attempting to break a case will notify the police.  Setting to 100 will notify every attempt.
 
 Config.PlayFailSound             =  true    -- Uses sound for failed attempt to break.
@@ -32,6 +32,7 @@ Config.UnAuthJobs = {
 }
 
 --  These are the items you can recieve from breaking a case - need to be listed from lowest chance to highest chance.
+--  If you have the highest chance set to less then 100 - will have a chance to not recieve any items from box.
 Config.ItemDrops  = {
    { name = 'gold_bar', max = 1,  chance = 3 },
    { name = 'rolex', max = 3, chance = 17 },
@@ -165,5 +166,6 @@ Config.CaseLocations = {
       Broken = false,
    },
  }
+
 
 

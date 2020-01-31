@@ -9,11 +9,11 @@ This script adds the abality to rob the Vangelico Jewelry  Store for a server.
   	Will receive random amount from Config.MinMoney to  Config.MaxMoney -  default is 5 - 100
 	AllowedWeapons:
  	list for Weapon break chance.  Each weapon can have unique break chance.  If set to 100 will break first try.
-ItemDrops: 
+	ItemDrops: 
  	list for Items allows for unique drop chance for each item, as well as max amount player can receive per box.
-UnAuthJobs:
+	UnAuthJobs:
  	list for server jobs that are not allowed to rob the jewelry store.
-Config.Closed:
+	Config.Closed:
  	This setting will close the store if the number of police on the server is lower then the Config.MinPolice.
 	
 

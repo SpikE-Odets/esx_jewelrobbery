@@ -108,7 +108,7 @@ AddEventHandler('esx_JewelRobbery:RestTimer', function()
         resettime = os.time() + totaltime
 
         while os.time() < resettime do
-            print('Compairing ('..tostring(os.time()).. ') - ('.. tostring(resettime) .. ')' )
+   --       print('Compairing ('..tostring(os.time()).. ') - ('.. tostring(resettime) .. ')' )
             Citizen.Wait(2350)
         end
 

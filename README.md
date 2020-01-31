@@ -6,7 +6,7 @@ This script adds the abality to rob the Vangelico Jewelry  Store for a server.
 
 # Features:
 
-  	AllowedWeapons:
+  	<b>AllowedWeapons</b>:
  	list for Weapon break chance.  Each weapon can have unique break chance.  If set to 100 will break first try.
 	
 	ItemDrops: 

@@ -22,13 +22,17 @@ This script adds the abality to rob the Vangelico Jewelry  Store for a server.
 	
   
  	Will receive random amount from Config.MinMoney to  Config.MaxMoney -  default is 5 - 100
-	Can set Police Notify Percentage - default is set to 40%
-	Can set Always Notify on death -  This will always notify Police of Murder if NPC is killed during mugging.  Once they start running the script will not notify if you kill them.
-	Must have Weapon that is not from melee/explosive catagory to start a mugging.
-	If you aim at a vehicle that is moving at all (even being pushed) the NPC will ignore the mugging script and act as the game dictates.
-	If you aim at a driver of a stopped vehicle the driver will exit the vehicle and put hands up you can then start the mugging.
-	Player can stop same NPC but if that npc is last one mugged will not be able to mug again.
-	Police Notification gives Alert as well as Circle that will slowly vanish over time (default is 250 seconds - not in Config.lua with this version)
+	<b>AllowedWeapons</b>:
+ 	list for Weapon break chance.  Each weapon can have unique break chance.  If set to 100 will break first try.
+	
+  <b>ItemDrops</b>: 
+ 	list for Items allows for unique drop chance for each item, as well as max amount player can receive per box.
+	
+  <b>UnAuthJobs</b>:
+ 	list for server jobs that are not allowed to rob the jewelry store.
+	
+  <b>Config.Closed</b>:
+ 	This setting will close the store if the number of police on the server is lower then the Config.MinPolice.
   
 
 

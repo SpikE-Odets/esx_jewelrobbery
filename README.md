@@ -1,3 +1,8 @@
+Latest Edit - I have switched the police check to using my new script   esx_jobnumbers.  You will need to download this script as well and make sure it is started in your server config before esx_jewelrobbery is.
+
+
+
+
 # esx_jewelrobbery
 
 This script adds the abality to rob the Vangelico Jewelry  Store for a server.
@@ -33,7 +38,10 @@ This script adds the abality to rob the Vangelico Jewelry  Store for a server.
 	Config.Closed:  This setting will close the store if the number of police on the server is lower then the Config.MinPolice.
 	
 	Config.AllowPoliceStoreClose:  Allows police to close the store after a robbery until next Store Reset.
-	
+
+
+# Dependences:
+	https://github.com/SpikE-Odets/esx_jobnumbers
 
 Any comments or questions about the script can be asked in the release post on FiveM.net/forum  or stop by https://twitch.tv/spikeodets to see what I am working on next.
 

@@ -29,22 +29,7 @@ AddEventHandler('esx_JewelRobbery:closestore', function()
     end
 end)
 
-function AnnounceJobs()
-    local police = 0
-    for i, v in pairs(joblist) do
-        for u, j in pairs(Config.PoliceJobs) do
-            if v.job == j then 
-                police = police + 1 
-            end
-        end
-    end
-    TriggerClientEvent('esx_JewelRobbery:PoliceCount', -1, police)
-end
 
-RegisterServerEvent('esx_JewelRobbery:playsound')
-AddEventHandler('esx_JewelRobbery:playsound', function(x,y,z, soundtype)
-    TriggerClientEvent('esx_JewelRobbery:playsound', -1, x, y, z, soundtype)
-end)
 
 RegisterServerEvent('esx_JewelRobbery:setcase')
 AddEventHandler('esx_JewelRobbery:setcase', function(casenumber, switch)
@@ -62,26 +47,6 @@ AddEventHandler('esx_JewelRobbery:policenotify', function()
     TriggerClientEvent('esx_JewelRobbery:policenotify', -1)    
 end)
 
-RegisterServerEvent('esx_JewelRobbery:changejob')
-AddEventHandler('esx_JewelRobbery:changejob', function(job)
-    _source = source
-    local updated = false
-    for i, v in pairs(joblist) do
-        if v.id == _source then
-            v.job = job.name
-            updated = true
-            break
-        end
-    end
-    if not updated then
-        local buildlist = {
-            id = _source,
-            job = job.name
-        }
-        table.insert(joblist, buildlist)
-    end
-    AnnounceJobs()
-end)
 
 RegisterServerEvent('esx_JewelRobbery:loadconfig')
 AddEventHandler('esx_JewelRobbery:loadconfig', function()
@@ -92,7 +57,6 @@ AddEventHandler('esx_JewelRobbery:loadconfig', function()
         job = xPlayer.job.name,
     }
     table.insert(joblist, buildlist)
-    AnnounceJobs()
     TriggerClientEvent('esx_JewelRobbery:loadconfig', _source, Config.CaseLocations)
     if policeclosed then
         TriggerClientEvent('esx_JewelRobbery:policeclosure', _source)
@@ -108,7 +72,7 @@ AddEventHandler('esx_JewelRobbery:RestTimer', function()
         resettime = os.time() + totaltime
 
         while os.time() < resettime do
-   --       print('Compairing ('..tostring(os.time()).. ') - ('.. tostring(resettime) .. ')' )
+            print('Compairing ('..tostring(os.time()).. ') - ('.. tostring(resettime) .. ')' )
             Citizen.Wait(2350)
         end
 
@@ -121,16 +85,6 @@ AddEventHandler('esx_JewelRobbery:RestTimer', function()
     end
 end)
 
-AddEventHandler('playerDropped', function()
-    _source = source
-    for i, v in pairs(joblist) do
-        if v.id == _source then
-            table.remove(joblist, i)
-            break
-        end
-    end
-    AnnounceJobs()
-end)
 
 AddEventHandler('esx_JewelRobbery:AwardItems', function(serverid)
     local xPlayer = ESX.GetPlayerFromId(serverid)

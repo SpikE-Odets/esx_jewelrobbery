@@ -49,7 +49,6 @@ end)
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	PlayerData.job = job
-	TriggerServerEvent('esx_JewelRobbery:changejob', job)
 end)
 
 RegisterNetEvent('esx:playerLoaded')
@@ -83,12 +82,6 @@ AddEventHandler('esx_JewelRobbery:setcase', function(casenumber, switch)
 	HasAlreadyEnteredArea = false
 end)
 
-RegisterNetEvent('esx_JewelRobbery:PoliceCount')
-AddEventHandler('esx_JewelRobbery:PoliceCount', function(amount)
-	CopsOnline = amount
-	Citizen.Wait(100)
-	HasAlreadyEnteredArea = false
-end)
 
 RegisterNetEvent('esx_JewelRobbery:policenotify')
 AddEventHandler('esx_JewelRobbery:policenotify', function()
@@ -96,23 +89,11 @@ AddEventHandler('esx_JewelRobbery:policenotify', function()
 		if  PlayerData.job.name == v then  
 			ESX.ShowAdvancedNotification('911 Emergency', 'Silent Alarm' , 'Vangelico Jewelry Store', 'CHAR_CALL911', 1)
 			TriggerEvent('esx_jewel:alarmBlip')
+			PlaySoundFromCoord(-1, "IDLE_BEEP", GetEntityCoords(GetPlayerPed(-1)), 0, 0, 0)
 		end
 	end
 end)
 
-
-RegisterNetEvent('esx_JewelRobbery:playsound')
-AddEventHandler('esx_JewelRobbery:playsound', function(x,y,z, soundtype)
-	ply = GetPlayerPed(-1)
-	plyloc = GetEntityCoords(ply)
-	if GetDistanceBetweenCoords(plyloc,x,y,z,true) < 20.0 then
-		if soundtype == 'break' then
-			PlaySoundFromCoord(-1, "Glass_Smash", x,y,z, 0, 0, 0)
-		elseif soundtype == 'nonbreak' then
-			PlaySoundFromCoord(-1, "Drill_Pin_Break", x,y,z, "DLC_HEIST_FLEECA_SOUNDSET", 0, 0, 0)
-		end
-	end
-end)
 
 RegisterNetEvent('esx_JewelRobbery:loadconfig')
 AddEventHandler('esx_JewelRobbery:loadconfig', function(casestatus)
@@ -192,16 +173,11 @@ Citizen.CreateThread( function()
 		if IsInArea and not HasAlreadyEnteredArea then
 			TriggerEvent('esx_JewelRobbery:EnteredArea')
 			shockingevent = false
-			if Config.Closed and not (CopsOnline >= Config.MinPolice) and not policeclosed then
+			if Config.Closed and not (CheckPolice() >= Config.MinPolice) and not policeclosed then
 				leftdoor = GetClosestObjectOfType(-631.9554, -236.3333, 38.20653, 11.0, GetHashKey("p_jewel_door_l"), false, false, false)
 				rightdoor = GetClosestObjectOfType(-631.9554, -236.3333, 38.20653, 11.0, GetHashKey("p_jewel_door_r1"), false, false, false)			
 				ClearAreaOfPeds(-622.2496, -230.8000, 38.05705, 10.0, 1)
 				storeclosed = true
-				HasNotified = false
-            elseif policeclosed then
-            	leftdoor = GetClosestObjectOfType(-631.9554, -236.3333, 38.20653, 11.0, GetHashKey("p_jewel_door_l"), false, false, false)
-				rightdoor = GetClosestObjectOfType(-631.9554, -236.3333, 38.20653, 11.0, GetHashKey("p_jewel_door_r1"), false, false, false)			
-				ClearAreaOfPeds(-622.2496, -230.8000, 38.05705, 10.0, 1)
 				HasNotified = false
 			else
 				leftdoor = GetClosestObjectOfType(-631.9554, -236.3333, 38.20653, 11.0, GetHashKey("p_jewel_door_l"), false, false, false)
@@ -211,6 +187,7 @@ Citizen.CreateThread( function()
 				freezedoors(false)
 				IsAbleToRob = true
 				HasNotified = false
+			
 			end
 			HasAlreadyEnteredArea = true
 		end
@@ -224,13 +201,21 @@ Citizen.CreateThread( function()
 			HasNotified = false
 		end
 		
-		if Config.Closed and not (CopsOnline >= Config.MinPolice) and not storeclosed and not policeclosed then
+		if Config.Closed and not (CheckPolice() >= Config.MinPolice) and not storeclosed and not policeclosed then
 			Citizen.Wait(1250)
 		else
 			Citizen.Wait(3250)
 		end
 	end
 end)
+
+function CheckPolice()
+	if CopsOnline ~= exports["esx_jobnumbers"]:jobonline('cops') then
+		HasAlreadyEnteredArea = false
+	end
+	CopsOnline = exports["esx_jobnumbers"]:jobonline('cops')
+	return exports["esx_jobnumbers"]:jobonline('cops')
+end
 
 function freezedoors(status)
 	FreezeEntityPosition(leftdoor, status)
@@ -279,7 +264,7 @@ Citizen.CreateThread( function()
 				
 		end
 
-		while IsAbleToRob and not UnAuthJob() and (CopsOnline >= Config.MinPolice) do
+		while IsAbleToRob and not UnAuthJob() and (CheckPolice() >= Config.MinPolice) do
 			Citizen.Wait(0)
 			sleep = 0
 			ply = GetPlayerPed(-1)
@@ -318,23 +303,17 @@ Citizen.CreateThread( function()
 									TriggerServerEvent('esx_JewelRobbery:policenotify')
 									HasNotified = true
 								end
-								Citizen.Wait(2100)
-								TriggerServerEvent('esx_JewelRobbery:playsound', v.Pos.x, v.Pos.y, v.Pos.z, 'break')
+								Citizen.Wait(1850)
+								TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 15.00, 'glass', 1.0)
+								Citizen.Wait(650)
 								CreateModelSwap(v.Pos.x, v.Pos.y, v.Pos.z,  0.1, GetHashKey(v.Prop1), GetHashKey(v.Prop), false )
-								Citizen.Wait(400)
 								ClearPedTasksImmediately(ply)
 								TriggerServerEvent("esx_JewelRobbery:setcase", i, true)	
 							else
-								if Config.PlayFailSound then
-									Citizen.Wait(2100)
-									TriggerServerEvent('esx_JewelRobbery:playsound', v.Pos.x, v.Pos.y, v.Pos.z, 'nonbreak')
-									ClearPedTasksImmediately(ply)
-									Citizen.Wait(400)
-								else
-									Citizen.Wait(2500)
-									ClearPedTasksImmediately(ply)
-								end
-
+								Citizen.Wait(1850)
+								TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 15.00, 'casehit', 1.0)
+								Citizen.Wait(650)
+								ClearPedTasksImmediately(ply)
 								if policenotify <= Config.PoliceNotifyNonBroken and not HasNotified then
 									TriggerServerEvent('esx_JewelRobbery:policenotify')
 									HasNotified = true

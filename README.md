@@ -41,8 +41,8 @@ This script adds the abality to rob the Vangelico Jewelry  Store for a server.
 
 
 # Dependences:
-	https://github.com/SpikE-Odets/esx_jobnumbers
+https://github.com/SpikE-Odets/esx_jobnumbers
 
-Any comments or questions about the script can be asked in the release post on FiveM.net/forum  or stop by https://twitch.tv/spikeodets to see what I am working on next.
+Any comments or questions about the script can be asked in the release post on https://forum.cfx.re/t/esx-jewelrobbery-release/997674/  or stop by https://twitch.tv/spikeodets to see what I am working on next.
 
 SpikE

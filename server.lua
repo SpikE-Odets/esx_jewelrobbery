@@ -29,7 +29,10 @@ AddEventHandler('esx_JewelRobbery:closestore', function()
     end
 end)
 
-
+RegisterServerEvent('esx_JewelRobbery:playsound')
+AddEventHandler('esx_JewelRobbery:playsound', function(x,y,z, soundtype)
+    TriggerClientEvent('esx_JewelRobbery:playsound', -1, x, y, z, soundtype)
+end)
 
 RegisterServerEvent('esx_JewelRobbery:setcase')
 AddEventHandler('esx_JewelRobbery:setcase', function(casenumber, switch)
@@ -72,7 +75,6 @@ AddEventHandler('esx_JewelRobbery:RestTimer', function()
         resettime = os.time() + totaltime
 
         while os.time() < resettime do
-            print('Compairing ('..tostring(os.time()).. ') - ('.. tostring(resettime) .. ')' )
             Citizen.Wait(2350)
         end
 

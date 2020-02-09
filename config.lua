@@ -1,6 +1,6 @@
 Config = {}
 
-Config.MinPolice                 = 1         -- Min number of police needed to rob jewelry store.
+Config.MinPolice                 = 0        -- Min number of police needed to rob jewelry store.
 Config.ResetTime                 = 60        -- Number of Minutes the store will reset after first case is broken
 
 Config.Closed                    =  true      -- Sets store to closed if the police online is less then MinPolice
@@ -35,7 +35,7 @@ Config.UnAuthJobs = {
 --  If you have the highest chance set to less then 100 - will have a chance to not recieve any items from box.
 --  You will need to change the names of these items to items in your database or enter these items into your database.
 Config.ItemDrops  = {
-   { name = 'gold_bar', max = 1,  chance = 3 },
+   { name = 'goldbar', max = 1,  chance = 3 },
    { name = 'rolex', max = 3, chance = 17 },
    { name = 'necklace', max = 5,  chance = 28},
    { name = 'wedding_ring', max = 5,  chance = 42},

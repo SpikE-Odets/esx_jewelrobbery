@@ -1,6 +1,6 @@
 Config = {}
 
-Config.MinPolice                 = 0        -- Min number of police needed to rob jewelry store.
+Config.MinPolice                 = 1        -- Min number of police needed to rob jewelry store.
 Config.ResetTime                 = 60        -- Number of Minutes the store will reset after first case is broken
 
 Config.Closed                    =  true      -- Sets store to closed if the police online is less then MinPolice

@@ -19,6 +19,8 @@ Citizen.CreateThread(function()
 	PlayerData = ESX.GetPlayerData()
 end)
 
+
+
 RegisterCommand('CloseStore', function(source, args, rawCommand)
 	if Config.AllowPoliceStoreClose then
 		ply = GetPlayerPed(-1)
@@ -35,6 +37,17 @@ RegisterCommand('CloseStore', function(source, args, rawCommand)
 		elseif ispolice then
 			ESX.ShowNotification('You must be standing near door to force the store closed!')
 		end
+	end
+end)
+
+
+RegisterNetEvent('esx_jobnumbers:setjobs')
+AddEventHandler('esx_jobnumbers:setjobs', function(jobslist)
+    JobCount = jobslist
+    if JobCount['cops'] ~= nil then
+		CopsOnline = JobCount['cops']
+	else
+		CopsOnline = 0
 	end
 end)
 
@@ -220,13 +233,18 @@ Citizen.CreateThread( function()
 	end
 end)
 
-function CheckPolice()
-	if CopsOnline ~= exports["esx_jobnumbers"]:jobonline('cops') then
-		HasAlreadyEnteredArea = false
+function hasgun()
+	hasweapon = false
+	local _, weaponname = GetCurrentPedWeapon(ply)
+	for index, weapon in pairs (Config.AllowedWeapons) do
+		if GetHashKey(weapon.name) == weaponname then
+			hasweapon = weapon
+			break 
+		end
 	end
-	CopsOnline = exports["esx_jobnumbers"]:jobonline('cops')
-	return exports["esx_jobnumbers"]:jobonline('cops')
+	return hasweapon
 end
+
 
 function freezedoors(status)
 	FreezeEntityPosition(leftdoor, status)
@@ -274,66 +292,56 @@ Citizen.CreateThread( function()
             end
 				
 		end
-
-		while IsAbleToRob and not UnAuthJob() and (CheckPolice() >= Config.MinPolice) do
-			Citizen.Wait(0)
-			sleep = 0
+		while IsAbleToRob and not UnAuthJob() and (CopsOnline >= Config.MinPolice) and hasgun() do
+			sleep = 1500
 			ply = GetPlayerPed(-1)
 			plyloc = GetEntityCoords(ply)
 			for i, v in pairs(Config.CaseLocations) do
 				if GetDistanceBetweenCoords(plyloc, v.Pos.x, v.Pos.y, v.Pos.z, true) < 1.0  and not v.Broken and not IsBusy then
-					local robalbe = false
-					local _, weaponname = GetCurrentPedWeapon(ply)
-					for index, weapon in pairs (Config.AllowedWeapons) do
-						if GetHashKey(weapon.name) == weaponname then
-							robalbe = weapon
-							break 
+					sleep = 5
+					DrawText3Ds(v.Pos.x, v.Pos.y, v.Pos.z + 0.5, 'Press ~g~E~w~ to Break')
+					if IsControlJustPressed(0, 38) and not IsBusy and not IsPedWalking(ply) and not IsPedRunning(ply) and not IsPedSprinting(ply) then
+						local policenotify = math.random(1,100)
+						if not shockingevent  then
+							AddShockingEventAtPosition(99, v.Pos.x, v.Pos.y, v.Pos.z,25.0)
+							shockingevent = true
 						end
-					end
-					if robalbe then	
-						DrawText3Ds(v.Pos.x, v.Pos.y, v.Pos.z + 0.5, 'Press ~g~E~w~ to Break')
-						if IsControlJustPressed(0, 38) and not IsBusy and not IsPedWalking(ply) and not IsPedRunning(ply) and not IsPedSprinting(ply) then
-							local policenotify = math.random(1,100)
-							if not shockingevent  then
-								AddShockingEventAtPosition(99, v.Pos.x, v.Pos.y, v.Pos.z,25.0)
-								shockingevent = true
-							end
-							IsBusy = true				
-							TaskTurnPedToFaceCoord(ply, v.Pos.x, v.Pos.y, v.Pos.z, 1250)
-							Citizen.Wait(1250)
-							if not HasAnimDictLoaded("missheist_jewel") then
-								RequestAnimDict("missheist_jewel") 
-							end
-							while not HasAnimDictLoaded("missheist_jewel") do 
-							Citizen.Wait(0)
-							end
-							TaskPlayAnim(ply, 'missheist_jewel', 'smash_case', 1.0, -1.0,-1,1,0,0, 0,0)
-							local breakchance = math.random(1, 100)
-							if breakchance <= robalbe.chance then
-								if policenotify <= Config.PoliceNotifyBroken and not HasNotified then
-									TriggerServerEvent('esx_JewelRobbery:policenotify')
-									HasNotified = true
-								end
-								Citizen.Wait(2100)
-								TriggerServerEvent('esx_JewelRobbery:playsound', v.Pos.x, v.Pos.y, v.Pos.z, 'break')
-								CreateModelSwap(v.Pos.x, v.Pos.y, v.Pos.z,  0.1, GetHashKey(v.Prop1), GetHashKey(v.Prop), false )
-								ClearPedTasksImmediately(ply)
-								TriggerServerEvent("esx_JewelRobbery:setcase", i, true)	
-							else
-								Citizen.Wait(2100)
-								TriggerServerEvent('esx_JewelRobbery:playsound', v.Pos.x, v.Pos.y, v.Pos.z, 'nonbreak')
-								ClearPedTasksImmediately(ply)
-								if policenotify <= Config.PoliceNotifyNonBroken and not HasNotified then
-									TriggerServerEvent('esx_JewelRobbery:policenotify')
-									HasNotified = true
-								end
-							end	
-							Citizen.Wait(1250)
-							IsBusy = false			
+						IsBusy = true				
+						TaskTurnPedToFaceCoord(ply, v.Pos.x, v.Pos.y, v.Pos.z, 1250)
+						Citizen.Wait(1250)
+						if not HasAnimDictLoaded("missheist_jewel") then
+							RequestAnimDict("missheist_jewel") 
 						end
+						while not HasAnimDictLoaded("missheist_jewel") do 
+						Citizen.Wait(0)
+						end
+						TaskPlayAnim(ply, 'missheist_jewel', 'smash_case', 1.0, -1.0,-1,1,0,0, 0,0)
+						local breakchance = math.random(1, 100)
+						if breakchance <= hasweapon.chance then
+							if policenotify <= Config.PoliceNotifyBroken and not HasNotified then
+								TriggerServerEvent('esx_JewelRobbery:policenotify')
+								HasNotified = true
+							end
+							Citizen.Wait(2100)
+							TriggerServerEvent('esx_JewelRobbery:playsound', v.Pos.x, v.Pos.y, v.Pos.z, 'break')
+							CreateModelSwap(v.Pos.x, v.Pos.y, v.Pos.z,  0.1, GetHashKey(v.Prop1), GetHashKey(v.Prop), false )
+							ClearPedTasksImmediately(ply)
+							TriggerServerEvent("esx_JewelRobbery:setcase", i, true)	
+						else
+							Citizen.Wait(2100)
+							TriggerServerEvent('esx_JewelRobbery:playsound', v.Pos.x, v.Pos.y, v.Pos.z, 'nonbreak')
+							ClearPedTasksImmediately(ply)
+							if policenotify <= Config.PoliceNotifyNonBroken and not HasNotified then
+								TriggerServerEvent('esx_JewelRobbery:policenotify')
+								HasNotified = true
+							end
+						end	
+						Citizen.Wait(1250)
+						IsBusy = false			
 					end
 				end
 			end
+			Citizen.Wait(sleep)
 		end
 		Citizen.Wait(sleep)
 	end

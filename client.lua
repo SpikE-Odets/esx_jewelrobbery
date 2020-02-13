@@ -49,6 +49,7 @@ AddEventHandler('esx_jobnumbers:setjobs', function(jobslist)
 	else
 		CopsOnline = 0
 	end
+	print('recieved Cop Count:'.. tostring(CopsOnline))
 end)
 
 RegisterNetEvent('esx_JewelRobbery:policeclosure')
@@ -197,7 +198,7 @@ Citizen.CreateThread( function()
 		if IsInArea and not HasAlreadyEnteredArea then
 			TriggerEvent('esx_JewelRobbery:EnteredArea')
 			shockingevent = false
-			if Config.Closed and not (CheckPolice() >= Config.MinPolice) and not policeclosed then
+			if Config.Closed and not (CopsOnline >= Config.MinPolice) and not policeclosed then
 				leftdoor = GetClosestObjectOfType(-631.9554, -236.3333, 38.20653, 11.0, GetHashKey("p_jewel_door_l"), false, false, false)
 				rightdoor = GetClosestObjectOfType(-631.9554, -236.3333, 38.20653, 11.0, GetHashKey("p_jewel_door_r1"), false, false, false)			
 				ClearAreaOfPeds(-622.2496, -230.8000, 38.05705, 10.0, 1)
@@ -225,7 +226,7 @@ Citizen.CreateThread( function()
 			HasNotified = false
 		end
 		
-		if Config.Closed and not (CheckPolice() >= Config.MinPolice) and not storeclosed and not policeclosed then
+		if Config.Closed and not (CopsOnline >= Config.MinPolice) and not storeclosed and not policeclosed then
 			Citizen.Wait(1250)
 		else
 			Citizen.Wait(3250)

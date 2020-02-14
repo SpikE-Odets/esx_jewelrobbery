@@ -49,7 +49,7 @@ AddEventHandler('esx_jobnumbers:setjobs', function(jobslist)
 	else
 		CopsOnline = 0
 	end
-	print('recieved Cop Count:'.. tostring(CopsOnline))
+	HasAlreadyEnteredArea = false
 end)
 
 RegisterNetEvent('esx_JewelRobbery:policeclosure')

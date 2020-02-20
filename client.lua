@@ -44,7 +44,7 @@ RegisterNetEvent('esx_jobnumbers:setjobs')
 AddEventHandler('esx_jobnumbers:setjobs', function(jobslist)
 	JobCount = jobslist
 	CopsOnline = 0
-    if JobCount['cops'] ~= nil then
+	if JobCount['cops'] ~= nil then
 		CopsOnline = JobCount['cops']
 	else
 		for i,v in pairs(Config.PoliceJobs) do

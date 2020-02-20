@@ -40,14 +40,18 @@ RegisterCommand('CloseStore', function(source, args, rawCommand)
 	end
 end)
 
-
 RegisterNetEvent('esx_jobnumbers:setjobs')
 AddEventHandler('esx_jobnumbers:setjobs', function(jobslist)
-    JobCount = jobslist
+	JobCount = jobslist
+	CopsOnline = 0
     if JobCount['cops'] ~= nil then
 		CopsOnline = JobCount['cops']
 	else
-		CopsOnline = 0
+		for i,v in pairs(Config.PoliceJobs) do
+			if JobCount[v] ~= nil then
+				CopsOnline = CopsOnline + JobCount[v]
+			end
+		end
 	end
 	HasAlreadyEnteredArea = false
 end)

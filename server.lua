@@ -3,8 +3,6 @@ local joblist = {}
 local resettime = nil
 local policeclosed = false
 
-AddEventHandler('')
-
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 

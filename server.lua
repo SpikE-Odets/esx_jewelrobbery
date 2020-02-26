@@ -3,7 +3,6 @@ local joblist = {}
 local resettime = nil
 local policeclosed = false
 
-
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 RegisterServerEvent('esx_JewelRobbery:closestore')
@@ -48,15 +47,11 @@ AddEventHandler('esx_JewelRobbery:policenotify', function()
     TriggerClientEvent('esx_JewelRobbery:policenotify', -1)    
 end)
 
-
 RegisterServerEvent('esx_JewelRobbery:loadconfig')
 AddEventHandler('esx_JewelRobbery:loadconfig', function()
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
-    local buildlist = {
-        id = _source,
-        job = xPlayer.job.name,
-    }
+    local buildlist = {id = _source,job = xPlayer.job.name,}
     table.insert(joblist, buildlist)
     TriggerClientEvent('esx_JewelRobbery:loadconfig', _source, Config.CaseLocations)
     if policeclosed then
@@ -64,8 +59,6 @@ AddEventHandler('esx_JewelRobbery:loadconfig', function()
     end
 
 end)
-
-
 
 AddEventHandler('esx_JewelRobbery:RestTimer', function()
     if resettime == nil then
@@ -85,10 +78,8 @@ AddEventHandler('esx_JewelRobbery:RestTimer', function()
     end
 end)
 
-
 AddEventHandler('esx_JewelRobbery:AwardItems', function(serverid)
     local xPlayer = ESX.GetPlayerFromId(serverid)
-
     local randomitem = math.random(1,100)
     for i, v in pairs(Config.ItemDrops) do 
         if randomitem <= v.chance then
@@ -112,5 +103,4 @@ AddEventHandler('esx_JewelRobbery:AwardItems', function(serverid)
             end
         end
     end
-
 end)

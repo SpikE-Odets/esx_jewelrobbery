@@ -1,12 +1,6 @@
-ESX                        		= nil
-local leftdoor, rightdoor		= nil, nil
-local HasAlreadyEnteredArea 	= false
-local IsAbleToRob				= false
-local policeclosed				= false
-local IsBusy, HasNotified		= false, false
-local CopsOnline 				= 0
-local shockingevent 			= false
-
+local ESX, leftdoor, rightdoor= nil, nil, nil
+local IsBusy, HasNotified, shockingevent,policeclosed, IsAbleToRob, HasAlreadyEnteredArea = false,false,false,false,false,false
+local CopsOnline= 0
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -18,8 +12,6 @@ Citizen.CreateThread(function()
 	end
 	PlayerData = ESX.GetPlayerData()
 end)
-
-
 
 RegisterCommand('CloseStore', function(source, args, rawCommand)
 	if Config.AllowPoliceStoreClose then
@@ -91,14 +83,11 @@ AddEventHandler('esx_JewelRobbery:resetcases', function(list)
 	HasAlreadyEnteredArea = false
 end)
 
-
-
 RegisterNetEvent('esx_JewelRobbery:setcase')
 AddEventHandler('esx_JewelRobbery:setcase', function(casenumber, switch)
 	Config.CaseLocations[casenumber].Broken = switch
 	HasAlreadyEnteredArea = false
 end)
-
 
 RegisterNetEvent('esx_JewelRobbery:policenotify')
 AddEventHandler('esx_JewelRobbery:policenotify', function()
@@ -109,7 +98,6 @@ AddEventHandler('esx_JewelRobbery:policenotify', function()
 		end
 	end
 end)
-
 
 RegisterNetEvent('esx_JewelRobbery:loadconfig')
 AddEventHandler('esx_JewelRobbery:loadconfig', function(casestatus)
@@ -126,7 +114,6 @@ AddEventHandler('esx_JewelRobbery:loadconfig', function(casestatus)
 	end
 end)
 
-
 RegisterNetEvent('esx_JewelRobbery:playsound')
 AddEventHandler('esx_JewelRobbery:playsound', function(x,y,z, soundtype)
 	ply = GetPlayerPed(-1)
@@ -139,7 +126,6 @@ AddEventHandler('esx_JewelRobbery:playsound', function(x,y,z, soundtype)
 		end
 	end
 end)
-
 
 AddEventHandler('esx_JewelRobbery:EnteredArea', function()
 	for i, v in pairs(Config.CaseLocations) do
@@ -187,7 +173,6 @@ function DrawText3Ds(x,y,z, text)
     local factor = (string.len(text)) / 370
     DrawRect(_x,_y+0.0125, 0.015+ factor, 0.03, 41, 11, 41, 68)
 end
-
 
 Citizen.CreateThread( function()
 	while true do 
@@ -250,12 +235,10 @@ function hasgun()
 	return hasweapon
 end
 
-
 function freezedoors(status)
 	FreezeEntityPosition(leftdoor, status)
 	FreezeEntityPosition(rightdoor, status)
 end
-
 
 Citizen.CreateThread( function()
 	while true do 
@@ -351,8 +334,6 @@ Citizen.CreateThread( function()
 		Citizen.Wait(sleep)
 	end
 end)
-
-
 
 AddEventHandler('esx_jewel:alarmBlip', function()
 	local transT = 250

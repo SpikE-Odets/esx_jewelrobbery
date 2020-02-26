@@ -42,7 +42,6 @@ Config.ItemDrops  = {
    { name = 'earrings', max = 10, chance = 100 },
 }
 
-
 -- Do Not Edit -- This list is just the general information for each of the 20 cases.
 Config.CaseLocations = {
    [1] = {
@@ -167,6 +166,3 @@ Config.CaseLocations = {
       Broken = false,
    },
  }
-
-
-

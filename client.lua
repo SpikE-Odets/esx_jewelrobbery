@@ -1,6 +1,5 @@
 local ESX, leftdoor, rightdoor= nil, nil, nil
 local IsBusy, HasNotified, shockingevent,policeclosed, IsAbleToRob, HasAlreadyEnteredArea = false,false,false,false,false,false
-local CopsOnline= 0
 
 Citizen.CreateThread(function()
     while ESX == nil do

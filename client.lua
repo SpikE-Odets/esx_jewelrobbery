@@ -32,21 +32,6 @@ RegisterCommand('CloseStore', function(source, args, rawCommand)
 	end
 end)
 
-RegisterNetEvent('esx_jobnumbers:setjobs')
-AddEventHandler('esx_jobnumbers:setjobs', function(jobslist)
-	JobCount = jobslist
-	CopsOnline = 0
-	if JobCount['cops'] ~= nil then
-		CopsOnline = JobCount['cops']
-	else
-		for i,v in pairs(Config.PoliceJobs) do
-			if JobCount[v] ~= nil then
-				CopsOnline = CopsOnline + JobCount[v]
-			end
-		end
-	end
-	HasAlreadyEnteredArea = false
-end)
 
 RegisterNetEvent('esx_JewelRobbery:policeclosure')
 AddEventHandler('esx_JewelRobbery:policeclosure', function()

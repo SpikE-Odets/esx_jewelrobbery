@@ -264,7 +264,7 @@ Citizen.CreateThread( function()
             end
 				
 		end
-		while IsAbleToRob and not UnAuthJob() and (CopsOnline >= Config.MinPolice) and hasgun() do
+		while IsAbleToRob and not UnAuthJob() and (GlobalState.jobnumbers["cops"] >= Config.MinPolice) and hasgun() do
 			sleep = 1500
 			ply = GetPlayerPed(-1)
 			plyloc = GetEntityCoords(ply)
